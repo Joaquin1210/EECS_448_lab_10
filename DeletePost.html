@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<title>KU Web Store</title>
+	</head>
+
+	<body>
+    <center>
+		<h1>Select User</h1>
+
+		<form action="DeletePost.php" id="UserPost" method="post">
+        <table>
+            <?php 
+            $mysqli = new mysqli("mysql.eecs.ku.edu", "j528v812", "yiesah7a", "j528v812");
+            if ($mysqli->connect_errno) 
+            {
+                printf("Connect failed: %s\n", $mysqli->connect_error);
+                exit();
+            }
+            else   
+            {
+                echo('<th>Posts</th>');
+                echo('<th>Authors</th>');
+                $query1 = "SELECT content FROM Posts";	
+                $query2 = "SELECT author_id FROM Posts";
+                if ($entity1 = $mysqli->query($query1)) 
+                {
+                    while ($row = $entity1->fetch_assoc()) 
+                    {
+                        if($entity2=$mysqli->query($query2))
+                        {
+                            $col = $entity2->fetch_assoc();
+                            echo('<tr>');
+                            echo ('<td><center>'.$row["content"].'</td>');
+                            echo ('<td><center>'.$col["author_id"].'</td>');
+                            echo ('</tr>');
+                        }
+                    }
+                    $entity1->free();
+                    $entity2->free();
+                }
+            }
+            $mysqli->close();
+            ?>
+        </table>
+        <br><br>
+        <input type="submit" value="Submit">
+      </form>
+    </center>
+    </body>
+</html>
